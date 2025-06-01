@@ -127,6 +127,11 @@ class Girl(Base):
             return self.description_en or None
         return None
 
+    def get_min_price(self) -> int | None:
+        if self.prices:
+            return min(price.current_cost for price in self.prices)
+        return None
+
 
 class Photo(Base):
     __tablename__ = "photos"
