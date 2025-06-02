@@ -3,7 +3,7 @@ from typing import Optional, List
 
 from pydantic import BaseModel, computed_field, Field
 
-from .models import HairColor, Ethnicity, BodyType, BreastType, City, Lang
+from .models import HairColor, Ethnicity, BodyType, BreastType, Lang
 
 
 def calculate_age(birth_date: date) -> int:
@@ -16,7 +16,6 @@ def calculate_age(birth_date: date) -> int:
 class GirlBase(BaseModel):
     name: str
     birth_date: date
-    city: City
     phone: str
     height: int
     weight: int
