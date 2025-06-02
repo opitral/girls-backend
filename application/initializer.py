@@ -42,7 +42,7 @@ class Initializer:
     def init_service(self):
         service_service = ServiceService(self.db)
 
-        if not service_service.get_services(limit=1):
+        if not service_service.get_services():
             if self.files.get("services"):
                 services_data = self.json_to_dict(self.files["services"])
                 for service in services_data:

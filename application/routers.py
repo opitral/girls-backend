@@ -71,16 +71,11 @@ service_router = APIRouter(prefix="/services", tags=["services"])
 
 @service_router.get("/", response_model=List[schemas.Service])
 def get_services(
-    skip: int = 0,
-    limit: int = 100,
     lang: Lang = Lang.UK,
     db: Session = Depends(get_db)
 ):
     service = ServiceService(db)
-    services = service.get_services(
-        skip=skip,
-        limit=limit
-    )
+    services = service.get_services()
 
     service_schemas = []
     for service in services:

@@ -131,8 +131,8 @@ class ServiceService:
     def __init__(self, db: Session):
         self.db = db
 
-    def get_services(self, skip: int = 0, limit: int = 100) -> list[type[models.Service]]:
-        return self.db.query(models.Service).offset(skip).limit(limit).all()
+    def get_services(self) -> list[type[models.Service]]:
+        return self.db.query(models.Service).all()
 
     def get_service(self, service_id: int) -> models.Service | None:
         return self.db.query(models.Service).filter(models.Service.id == service_id).first()
