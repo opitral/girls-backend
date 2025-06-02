@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 
 from application.database import SessionLocal
-from application.models import City, BodyType, BreastType, HairColor, Photo, Service, Price
+from application.models import BodyType, BreastType, HairColor, Photo, Service, Price
 from application.schemas import ServiceCreate, GirlCreate
 from application.services import ServiceService, GirlService
 
@@ -57,7 +57,6 @@ class Initializer:
         return GirlCreate(
             name=data.get("name"),
             birth_date=datetime.date.fromisoformat(data.get("birth_date")),
-            city=City(data.get("city")),
             phone=data.get("phone"),
             height=data.get("height"),
             weight=data.get("weight"),

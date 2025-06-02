@@ -21,11 +21,11 @@ class HairColor(str, PyEnum):
 
     def get_translation(self, lang: Lang) -> str:
         translations = {
-            "blonde": {Lang.UK: "Блондинки", Lang.RU: "Блондинки", Lang.EN: "Blondes"},
-            "brunette": {Lang.UK: "Брюнетки", Lang.RU: "Брюнетки", Lang.EN: "Brunettes"},
-            "fair": {Lang.UK: "Русяві", Lang.RU: "Русые", Lang.EN: "Fair-haired"},
-            "redhead": {Lang.UK: "Руді", Lang.RU: "Рыжие", Lang.EN: "Redheads"},
-            "brown": {Lang.UK: "Шатенки", Lang.RU: "Шатенки", Lang.EN: "Brown-haired"},
+            "blonde": {Lang.UK: "Блондинка", Lang.RU: "Блондинка", Lang.EN: "Blondes"},
+            "brunette": {Lang.UK: "Брюнетка", Lang.RU: "Брюнетка", Lang.EN: "Brunettes"},
+            "fair": {Lang.UK: "Русява", Lang.RU: "Русая", Lang.EN: "Fair-haired"},
+            "redhead": {Lang.UK: "Руда", Lang.RU: "Рыжая", Lang.EN: "Redheads"},
+            "brown": {Lang.UK: "Шатенка", Lang.RU: "Шатенка", Lang.EN: "Brown-haired"},
         }
         return translations[self.value].get(lang, self.value)
 
@@ -37,9 +37,9 @@ class Ethnicity(str, PyEnum):
 
     def get_translation(self, lang: Lang) -> str:
         translations = {
-            "asian": {Lang.UK: "Азіатки", Lang.RU: "Азиатки", Lang.EN: "Asians"},
-            "mulatto": {Lang.UK: "Мулатки", Lang.RU: "Мулатки", Lang.EN: "Mulatto"},
-            "slavic": {Lang.UK: "Слов'янки", Lang.RU: "Славянки", Lang.EN: "Slavic"},
+            "asian": {Lang.UK: "Азіатка", Lang.RU: "Азиатка", Lang.EN: "Asians"},
+            "mulatto": {Lang.UK: "Мулатка", Lang.RU: "Мулатка", Lang.EN: "Mulatto"},
+            "slavic": {Lang.UK: "Слов'янка", Lang.RU: "Славянка", Lang.EN: "Slavic"},
         }
         return translations[self.value].get(lang, self.value)
 
@@ -53,11 +53,11 @@ class BodyType(str, PyEnum):
 
     def get_translation(self, lang: Lang) -> str:
         translations = {
-            "slim": {Lang.UK: "Худі", Lang.RU: "Худые", Lang.EN: "Slim"},
-            "fit": {Lang.UK: "Стрункі", Lang.RU: "Стройные", Lang.EN: "Fit"},
-            "sport": {Lang.UK: "Спортивні", Lang.RU: "Спортивные", Lang.EN: "Sporty"},
-            "dense": {Lang.UK: "Щільні", Lang.RU: "Плотные", Lang.EN: "Dense"},
-            "fat": {Lang.UK: "Товсті", Lang.RU: "Полные", Lang.EN: "Fat"},
+            "slim": {Lang.UK: "Худа", Lang.RU: "Худая", Lang.EN: "Slim"},
+            "fit": {Lang.UK: "Струнка", Lang.RU: "Стройная", Lang.EN: "Fit"},
+            "sport": {Lang.UK: "Спортивна", Lang.RU: "Спортивная", Lang.EN: "Sporty"},
+            "dense": {Lang.UK: "Щільна", Lang.RU: "Плотная", Lang.EN: "Dense"},
+            "fat": {Lang.UK: "Товста", Lang.RU: "Полная", Lang.EN: "Fat"},
         }
         return translations[self.value].get(lang, self.value)
 
@@ -69,25 +69,15 @@ class BreastType(str, PyEnum):
     def get_translation(self, lang: Lang) -> str:
         translations = {
             "natural": {
-                Lang.UK: "Натуральна грудь",
-                Lang.RU: "Натуральная грудь",
-                Lang.EN: "Natural breast",
+                Lang.UK: "Натуральна",
+                Lang.RU: "Натуральная",
+                Lang.EN: "Natural",
             },
             "silicone": {
-                Lang.UK: "Силіконова грудь",
-                Lang.RU: "Силиконовая грудь",
-                Lang.EN: "Silicone breast",
+                Lang.UK: "Силіконова",
+                Lang.RU: "Силиконовая",
+                Lang.EN: "Silicone",
             },
-        }
-        return translations[self.value].get(lang, self.value)
-
-
-class City(str, PyEnum):
-    KYIV = "kyiv"
-
-    def get_translation(self, lang: Lang) -> str:
-        translations = {
-            "kyiv": {Lang.UK: "Київ", Lang.RU: "Киев", Lang.EN: "Kyiv"},
         }
         return translations[self.value].get(lang, self.value)
 
@@ -98,7 +88,6 @@ class Girl(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(16), nullable=False)
     birth_date = Column(Date, nullable=False)
-    city = Column(Enum(City), nullable=False)
     phone = Column(String(13), nullable=False)
     height = Column(Integer, nullable=False)
     weight = Column(Integer, nullable=False)
