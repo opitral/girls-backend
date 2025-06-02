@@ -2,7 +2,7 @@ from datetime import date, timedelta
 from enum import Enum
 from typing import Optional
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 
 from application import models, schemas
 from application.models import Girl
@@ -43,6 +43,8 @@ class GirlService:
     ) -> list[type[Girl]]:
 
         query = self.db.query(models.Girl)
+        PriceAlias = aliased(models.Price)
+        needs_price_join = False
 
         if age_min is not None:
             max_birth_date = date.today() - timedelta(days=age_min * 365)
@@ -67,11 +69,12 @@ class GirlService:
             query = query.filter(models.Girl.breast_size <= breast_max)
 
         if price_min is not None or price_max is not None:
-            query = query.join(models.Price)
+            needs_price_join = True
+            query = query.join(PriceAlias, models.Girl.prices)
             if price_min is not None:
-                query = query.filter(models.Price.current_cost >= price_min)
+                query = query.filter(PriceAlias.current_cost >= price_min)
             if price_max is not None:
-                query = query.filter(models.Price.current_cost <= price_max)
+                query = query.filter(PriceAlias.current_cost <= price_max)
 
         if service_ids:
             for service_id in service_ids:
@@ -92,9 +95,13 @@ class GirlService:
         elif sort_by == SortBy.BUST_DOWN:
             query = query.order_by(models.Girl.breast_size.desc())
         elif sort_by == SortBy.PRICE_UP:
-            query = query.join(models.Price).order_by(models.Price.current_cost.asc())
+            if not needs_price_join:
+                query = query.join(PriceAlias, models.Girl.prices)
+            query = query.order_by(PriceAlias.current_cost.asc())
         elif sort_by == SortBy.PRICE_DOWN:
-            query = query.join(models.Price).order_by(models.Price.current_cost.desc())
+            if not needs_price_join:
+                query = query.join(PriceAlias, models.Girl.prices)
+            query = query.order_by(PriceAlias.current_cost.desc())
         else:
             query = query.order_by(models.Girl.id.desc())
 
