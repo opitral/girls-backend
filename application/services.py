@@ -43,8 +43,6 @@ class GirlService:
     ) -> list[type[Girl]]:
 
         query = self.db.query(models.Girl)
-        PriceAlias = aliased(models.Price)
-        needs_price_join = False
 
         if age_min is not None:
             max_birth_date = date.today() - timedelta(days=age_min * 365)
@@ -68,14 +66,6 @@ class GirlService:
         if breast_max is not None:
             query = query.filter(models.Girl.breast_size <= breast_max)
 
-        if price_min is not None or price_max is not None:
-            needs_price_join = True
-            query = query.join(PriceAlias, models.Girl.prices)
-            if price_min is not None:
-                query = query.filter(PriceAlias.current_cost >= price_min)
-            if price_max is not None:
-                query = query.filter(PriceAlias.current_cost <= price_max)
-
         if service_ids:
             for service_id in service_ids:
                 query = query.filter(
@@ -94,18 +84,33 @@ class GirlService:
             query = query.order_by(models.Girl.breast_size.asc())
         elif sort_by == SortBy.BUST_DOWN:
             query = query.order_by(models.Girl.breast_size.desc())
-        elif sort_by == SortBy.PRICE_UP:
-            if not needs_price_join:
-                query = query.join(PriceAlias, models.Girl.prices)
-            query = query.order_by(PriceAlias.current_cost.asc())
-        elif sort_by == SortBy.PRICE_DOWN:
-            if not needs_price_join:
-                query = query.join(PriceAlias, models.Girl.prices)
-            query = query.order_by(PriceAlias.current_cost.desc())
         else:
             query = query.order_by(models.Girl.id.desc())
 
-        return query.offset(skip).limit(limit).all()
+        girls = query.offset(skip).limit(limit).all()
+
+        if price_min is not None:
+            girls_price_min = []
+            for girl in girls:
+                if girl.min_price >= price_min:
+                    girls_price_min.append(girl)
+            girls = girls_price_min
+
+        if price_max is not None:
+            girls_price_max = []
+            for girl in girls:
+                if girl.min_price <= price_max:
+                    girls_price_max.append(girl)
+            girls = girls_price_max
+
+        if sort_by == SortBy.PRICE_UP:
+            girls.sort(key=lambda x: x.min_price)
+
+        elif sort_by == SortBy.PRICE_DOWN:
+            girls.sort(key=lambda x: x.min_price, reverse=True)
+
+        return girls
+
 
     def get_girl(self, girl_id: int) -> models.Girl | None:
         return self.db.query(models.Girl).filter(models.Girl.id == girl_id).first()

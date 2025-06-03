@@ -1,6 +1,7 @@
 from enum import Enum as PyEnum
 
-from sqlalchemy import Column, Integer, Date, String, Float, Enum, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, Date, String, Float, Enum, Boolean, ForeignKey, select, func
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
 from application.database import Base
@@ -116,10 +117,11 @@ class Girl(Base):
             return self.description_en or None
         return None
 
-    def get_min_price(self) -> int | None:
+    @property
+    def min_price(self) -> int:
         if self.prices:
             return min(price.current_cost for price in self.prices)
-        return None
+        return 0
 
 
 class Photo(Base):
