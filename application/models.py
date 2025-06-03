@@ -70,7 +70,7 @@ class BreastType(str, PyEnum):
     def get_translation(self, lang: Lang) -> str:
         translations = {
             "natural": {
-                Lang.UK: "Натуральна",
+                Lang.UK: "Натуральні",
                 Lang.RU: "Натуральная",
                 Lang.EN: "Natural",
             },
