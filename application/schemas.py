@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Optional, List, Callable
+from typing import Optional, List
 
 from pydantic import BaseModel, computed_field, Field
 
@@ -117,7 +117,7 @@ class GirlService(GirlServiceBase):
     service_id: int = Field(exclude=True)
 
     @computed_field
-    def service_name_localized(self) -> str:
+    def name_localized(self) -> str:
         self.service.lang = self.lang
         return self.service.name_localized
 
