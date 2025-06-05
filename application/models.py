@@ -1,7 +1,6 @@
 from enum import Enum as PyEnum
 
-from sqlalchemy import Column, Integer, Date, String, Float, Enum, Boolean, ForeignKey, select, func
-from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import Column, Integer, Date, String, Float, Enum, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 
 from application.database import Base
@@ -106,7 +105,7 @@ class Girl(Base):
 
     photos = relationship("Photo", back_populates="girl")
     prices = relationship("Price", back_populates="girl")
-    services = relationship("Service", secondary="girl_services", back_populates="girls")
+    services = relationship("GirlService", back_populates="girl")
 
     def get_description(self, lang: Lang) -> str | None:
         if lang == Lang.UK:
@@ -154,6 +153,9 @@ class GirlService(Base):
     service_id = Column(Integer, ForeignKey("services.id"), primary_key=True)
     additional_cost = Column(Integer)
 
+    girl = relationship("Girl", back_populates="services")
+    service = relationship("Service", back_populates="girl_services")
+
 
 class Service(Base):
     __tablename__ = "services"
@@ -164,7 +166,7 @@ class Service(Base):
     name_en = Column(String(32), nullable=False)
     order = Column(Integer, nullable=False)
 
-    girls = relationship("Girl", secondary="girl_services", back_populates="services")
+    girl_services = relationship("GirlService", back_populates="service")
 
     def get_name(self, lang: Lang) -> str:
         if lang == Lang.UK:

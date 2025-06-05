@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Optional, List
+from typing import Optional, List, Callable
 
 from pydantic import BaseModel, computed_field, Field
 
@@ -104,12 +104,37 @@ class Service(ServiceBase):
         from_attributes = True
 
 
+class GirlServiceBase(BaseModel):
+    girl_id: int
+    service_id: int
+    additional_cost: Optional[int] = None
+
+
+class GirlService(GirlServiceBase):
+    service: Service = Field(exclude=True)
+    lang: Lang = Field(default=Lang.UK, exclude=True)
+    girl_id: int = Field(exclude=True)
+    service_id: int = Field(exclude=True)
+
+    @computed_field
+    def service_name_localized(self) -> str:
+        self.service.lang = self.lang
+        return self.service.name_localized
+
+    class Config:
+        from_attributes = True
+
+
+class GirlServiceCreate(GirlServiceBase):
+    pass
+
+
 class Girl(GirlBase):
     id: int
     birth_date: date = Field(exclude=True)
     photos: List[Photo] = []
     prices: List[Price] = []
-    services: List[Service] = []
+    services: List[GirlService] = []
     lang: Lang = Field(default=Lang.UK, exclude=True)
 
     hair_color: HairColor = Field(exclude=True)

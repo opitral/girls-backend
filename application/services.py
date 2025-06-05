@@ -2,7 +2,7 @@ from datetime import date, timedelta
 from enum import Enum
 from typing import Optional
 
-from sqlalchemy.orm import Session, aliased
+from sqlalchemy.orm import Session
 
 from application import models, schemas
 from application.models import Girl

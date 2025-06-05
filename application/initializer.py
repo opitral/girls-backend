@@ -2,8 +2,9 @@ import datetime
 import logging
 from pathlib import Path
 
+from application import models
 from application.database import SessionLocal
-from application.models import BodyType, BreastType, HairColor, Photo, Service, Price
+from application.models import BodyType, BreastType, HairColor, Photo, Price
 from application.schemas import ServiceCreate, GirlCreate
 from application.services import ServiceService, GirlService
 
@@ -96,14 +97,17 @@ class Initializer:
             ))
         return prices
 
-    def dict_to_services(self, data: dict) -> list[Service]:
-        service_service = ServiceService(self.db)
-        services = []
-        for service_id in data.get("services", []):
-            service = service_service.get_service(service_id)
-            if service:
-                services.append(service)
-        return services
+    @staticmethod
+    def dict_to_girl_services(data: dict) -> list[models.GirlService]:
+        girl_services = []
+        for girl_service_data in data.get("services", []):
+            girl_services.append(models.GirlService(
+                service_id=girl_service_data.get("service_id"),
+                additional_cost=girl_service_data.get("additional_cost")
+            ))
+
+        return girl_services
+
 
     def init_girls(self):
         girl_service = GirlService(self.db)
@@ -115,7 +119,7 @@ class Initializer:
                     new_girl = girl_service.create_girl(self.dict_to_girl_create(girl_data))
                     new_photos = self.dict_to_photos(girl_data, new_girl.id)
                     new_prices = self.dict_to_prices(girl_data, new_girl.id)
-                    new_services = self.dict_to_services(girl_data)
+                    new_services = self.dict_to_girl_services(girl_data)
                     new_girl.photos.extend(new_photos)
                     new_girl.prices.extend(new_prices)
                     new_girl.services.extend(new_services)
