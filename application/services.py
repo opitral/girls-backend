@@ -67,10 +67,9 @@ class GirlService:
             query = query.filter(models.Girl.breast_size <= breast_max)
 
         if service_ids:
-            for service_id in service_ids:
-                query = query.filter(
-                    models.Girl.services.any(models.Service.id == service_id)
-                )
+            query = query.join(models.GirlService).filter(
+                models.GirlService.service_id.in_(service_ids)
+            )
 
         if sort_by == SortBy.AGE_UP:
             query = query.order_by(models.Girl.birth_date.desc())
