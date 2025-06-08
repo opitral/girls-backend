@@ -127,7 +127,7 @@ class Photo(Base):
     __tablename__ = "photos"
 
     id = Column(Integer, primary_key=True, index=True)
-    file_path = Column(String(256), nullable=False)
+    file_url = Column(String(256), nullable=False)
     order = Column(Integer, nullable=False)
     girl_id = Column(Integer, ForeignKey("girls.id"))
 

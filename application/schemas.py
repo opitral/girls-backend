@@ -37,7 +37,7 @@ class GirlCreate(GirlBase):
 
 
 class PhotoBase(BaseModel):
-    file_path: str
+    file_url: str
     order: int
 
 
@@ -197,7 +197,7 @@ class GirlShort(BaseModel):
     @computed_field
     def main_photo(self) -> Optional[str]:
         if self.photos:
-            return self.photos[0].file_path
+            return self.photos[0].file_url
         return None
 
     @computed_field

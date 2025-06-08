@@ -82,7 +82,7 @@ class GirlService:
         elif sort_by == SortBy.BUST_DOWN:
             query = query.order_by(models.Girl.breast_size.desc())
         else:
-            query = query.order_by(models.Girl.id.desc())
+            query = query.order_by(models.Girl.id.asc())
 
         girls = query.offset(skip).limit(limit).all()
 

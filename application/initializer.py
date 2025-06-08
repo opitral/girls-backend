@@ -79,7 +79,7 @@ class Initializer:
         photos = []
         for photo in data.get("photos", []):
             photos.append(Photo(
-                file_path=photo.get("file_path"),
+                file_url=photo.get("file_url"),
                 order=photo.get("order"),
                 girl_id=girl_id
             ))
