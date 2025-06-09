@@ -17,6 +17,8 @@ class GirlBase(BaseModel):
     name: str
     birth_date: date
     phone: str
+    telegram: Optional[str] = None
+    whatsapp: Optional[str] = None
     height: int
     weight: int
     breast_size: float

@@ -59,6 +59,8 @@ class Initializer:
             name=data.get("name"),
             birth_date=datetime.date.fromisoformat(data.get("birth_date")),
             phone=data.get("phone"),
+            telegram=data.get("telegram"),
+            whatsapp=data.get("whatsapp"),
             height=data.get("height"),
             weight=data.get("weight"),
             breast_size=data.get("breast_size"),

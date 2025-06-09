@@ -89,6 +89,8 @@ class Girl(Base):
     name = Column(String(16), nullable=False)
     birth_date = Column(Date, nullable=False)
     phone = Column(String(13), nullable=False)
+    telegram = Column(String(64), nullable=True)
+    whatsapp = Column(String(64), nullable=True)
     height = Column(Integer, nullable=False)
     weight = Column(Integer, nullable=False)
     breast_size = Column(Float, nullable=False)
